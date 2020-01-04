@@ -1,0 +1,24 @@
+{
+  "name": "dbg_websocket_client",
+  "version": "1.0.0",
+  "description": "This is a websocket client for the DBG API websocket. This saves the received data in structured folders inside JSON files. Previous data can be requested with an internal websocket",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brakenium/DBG_Websocket_client.git"
+  },
+  "author": "brakenium",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brakenium/DBG_Websocket_client/issues"
+  },
+  "homepage": "https://github.com/brakenium/DBG_Websocket_client#readme",
+  "dependencies": {
+    "jsonpath-plus": "^2.0.0",
+    "ws": "^7.2.1"
+  }
+}

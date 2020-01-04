@@ -908,8 +908,7 @@
             "description": {
                 "en": "Kill as many enemies as possible"
             },
-            "type": "6",
-            "zone_id": "4"
+            "type": "6"
         }
     ]
 }

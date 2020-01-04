@@ -1,11 +1,16 @@
+// Defines wich libraries are used
 const WebSocket = require('ws');
+const { JSONPath } = require('jsonpath-plus');
 const fs = require('fs');
+
+// Loads all necessary files
 const config = require('./json/config.json');
 const constants = require('./json/constants.json');
+
+// Defines all websockets
 const DBGWebsocket = new WebSocket(`wss://push.planetside2.com/streaming?environment=ps2&service-id=s:${config.dbg_api.service_id}`);
 const internalWSServer = new WebSocket.Server({ port: 8080 });
 const internalWS = new WebSocket('ws://0.0.0.0:8080');
-const { JSONPath } = require('jsonpath-plus');
 
 // This function saves files
 function saveData(dir, data) {
