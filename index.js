@@ -70,7 +70,7 @@ internalWSServer.on('connection', function connection(ws) {
 
 	// This websocket client listens to the daybreakgames API websocket server
 	// The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
-	// 		1.MetagameEvent on all worlds (game servers)
+	// 		1.MetagameEvent on world 10 (game servers)
 	// 		2.Nothing yet....
 	DBGWebsocket.on('open', function open() {
 		console.log('DBG websocket open');
