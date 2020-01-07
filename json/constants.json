@@ -230,7 +230,8 @@
             "description": {
                 "en": "Capture bases and kill enemies to earn points."
             },
-            "type": "6"
+            "type": "6",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "123",
@@ -583,7 +584,8 @@
             "description": {
                 "en": "Take readings of aerial anomalies"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "168",
@@ -593,7 +595,8 @@
             "description": {
                 "en": "Gather Tempest from the meteor site and return it to your Warpgate."
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "170",
@@ -603,7 +606,8 @@
             "description": {
                 "en": "A deadly meteor shower is wreaking havoc across the continent."
             },
-            "type": "5"
+            "type": "5",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "172",
@@ -613,7 +617,8 @@
             "description": {
                 "en": "Take readings of aerial anomalies"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "173",
@@ -623,7 +628,8 @@
             "description": {
                 "en": "Take readings of aerial anomalies"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "174",
@@ -644,7 +650,8 @@
             "description": {
                 "en": "Take readings of aerial anomalies"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "176",
@@ -702,7 +709,8 @@
             "description": {
                 "en": "Capture and hold the most Large Outposts"
             },
-            "type": "2"
+            "type": "2",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "181",
@@ -712,7 +720,8 @@
             "description": {
                 "en": "Capture and hold the most Large Outposts"
             },
-            "type": "2"
+            "type": "2",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "182",
@@ -722,7 +731,8 @@
             "description": {
                 "en": "Capture and hold the most Large Outposts"
             },
-            "type": "2"
+            "type": "2",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "183",
@@ -732,7 +742,8 @@
             "description": {
                 "en": "Capture and hold the most Large Outposts"
             },
-            "type": "2"
+            "type": "2",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "186",
@@ -838,7 +849,8 @@
             "description": {
                 "en": "Deposit Cortium into the refinery"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "195",
@@ -848,7 +860,8 @@
             "description": {
                 "en": "Deposit Cortium into the refinery"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "196",
@@ -858,7 +871,8 @@
             "description": {
                 "en": "Deposit Cortium into the refinery"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "197",
@@ -868,7 +882,8 @@
             "description": {
                 "en": "Deposit Cortium into the refinery"
             },
-            "type": "10"
+            "type": "10",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "198",
@@ -878,7 +893,8 @@
             "description": {
                 "en": "Kill as many enemies as possible"
             },
-            "type": "6"
+            "type": "6",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "199",
@@ -888,7 +904,8 @@
             "description": {
                 "en": "Kill as many enemies as possible"
             },
-            "type": "6"
+            "type": "6",
+            "zone_id": "other"
         },
         {
             "metagame_event_id": "200",
@@ -898,7 +915,8 @@
             "description": {
                 "en": "Kill as many enemies as possible"
             },
-            "type": "6"
+            "type": "6",
+            "zone_id": "6"
         },
         {
             "metagame_event_id": "201",
@@ -908,7 +926,63 @@
             "description": {
                 "en": "Kill as many enemies as possible"
             },
-            "type": "6"
+            "type": "6",
+            "zone_id": "other"
+        },
+        {
+            "metagame_event_id": "808350",
+            "name": {
+                "en": "No alert saved"
+            },
+            "description": {
+                "en": "This will be shown when there is no alert saved. This will be edited when an alert has happened. This is a placeholder for Indar (2)"
+            },
+            "type": "0",
+            "zone_id": "2"
+        },
+        {
+            "metagame_event_id": "808351",
+            "name": {
+                "en": "No alert saved"
+            },
+            "description": {
+                "en": "This will be shown when there is no alert saved. This will be edited when an alert has happened. This is a placeholder for Hossin (4)"
+            },
+            "type": "0",
+            "zone_id": "4"
+        },
+        {
+            "metagame_event_id": "808352",
+            "name": {
+                "en": "No alert saved"
+            },
+            "description": {
+                "en": "This will be shown when there is no alert saved. This will be edited when an alert has happened. This is a placeholder for Amerish (6)"
+            },
+            "type": "6",
+            "zone_id": "6"
+        },
+        {
+            "metagame_event_id": "808353",
+            "name": {
+                "en": "No alert saved"
+            },
+            "description": {
+                "en": "This will be shown when there is no alert saved. This will be edited when an alert has happened. This is a placeholder for Esamir (8)"
+            },
+            "type": "6",
+            "zone_id": "8"
+        },
+        {
+            "metagame_event_id": "808354",
+            "name": {
+                "en": "No alert saved"
+            },
+            "description": {
+                "en": "This will be shown when there is no alert saved. This will be edited when an alert has happened. This is a placeholder for other (undefined)"
+            },
+            "type": "6",
+            "zone_id": "other"
         }
     ]
 }

@@ -1,0 +1,17 @@
+{
+  "payload": {
+    "event_name": "MetagameEvent",
+    "experience_bonus": "0.000000",
+    "faction_nc": "0.000000",
+    "faction_tr": "0.000000",
+    "faction_vs": "0.000000",
+    "instance_id": "0",
+    "metagame_event_id": "808353",
+    "metagame_event_state": "0",
+    "metagame_event_state_name": "no-alert-saved",
+    "timestamp": "1",
+    "world_id": "10"
+  },
+  "service": "event",
+  "type": "serviceMessage"
+}
