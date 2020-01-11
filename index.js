@@ -42,6 +42,20 @@ function resendMetagameEvent(properties, zones, ws) {
 	}
 };
 
+function worldNameFromID(world_id) {
+	// Gets the worldname from the constants file using world_id
+	return JSONPath(`$.worlds[?(@.world_id==${world_id})].name`, constants);
+}
+
+function continentStatusAppend(data) {
+	const parsedData = JSON.parse(data);
+	const world_name = worldNameFromID(parsedData.payload.world_id);
+	// Appends the received continent status to the defined filepath
+	fs.appendFile(`./json/Continent(Un)Lock/${world_name}/all.json`, data, function(err) {
+		if (err) throw err;
+	});
+}
+
 // internalWSServer is the websocket server meant to be used by the discord bot
 // internalWS is the client for internalWSServer. internalWSServer is used by the internal communications between this program and the discord bot
 internalWSServer.on('connection', function connection(ws) {
@@ -71,12 +85,13 @@ internalWSServer.on('connection', function connection(ws) {
 	// This websocket client listens to the daybreakgames API websocket server
 	// The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
 	// 		1.MetagameEvent on world 10 (game servers)
-	// 		2.Nothing yet....
+	// 		2.ContinentUnlock
+	//		3.ContinentLock
 	DBGWebsocket.on('open', function open() {
 		console.log('DBG websocket open');
 
 		// Listens to MetagameEvents on the DBGWebsocket on world 10 (Miller)
-		DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent"]}');
+		DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent","ContinentUnlock","ContinentLock"]}');
 
 		// This let's client "DBGWebsocket" listen to incoming messages and puts the data that needs to be saved in the right location
 		DBGWebsocket.on('message', function incoming(data) {
@@ -95,7 +110,7 @@ internalWSServer.on('connection', function connection(ws) {
 
 				// Grabs the worldname from 'constants.json'. It grabs it from the worlds map and filters it to only show entries with the world ID received from the DBG API
 				// It then grabs the name from entry and saves it in world_name
-				const world_name = JSONPath(`$.worlds[?(@.world_id==${parsedData.payload.world_id})].name`, constants);
+				const world_name = worldNameFromID(parsedData.payload.world_id);
 
 				// Grabs the zone ID from 'constants.json'. It grabs it from metagame_event_list map and filters it to only show entries with the metagame_event_id from the DBG API
 				// Then it grabs the zone_id from the entry and saves it in zone_id
@@ -117,6 +132,14 @@ internalWSServer.on('connection', function connection(ws) {
 					saveData(filepath_all_other, data);
 				}
 				break;
+			}
+			case 'ContinentLock': {
+				console.log(`(CL) Type is "${parsedData.type}"`);
+				continentStatusAppend(parsedData);
+			}
+			case 'ContinentUnlock': {
+				console.log(`(CU) Type is "${parsedData.type}"`);
+				continentStatusAppend(parsedData);
 			}
 			case 'heartbeat': {
 				// Saves the received heartbeat to a file. Only the last heartbeat will be in that file
