@@ -23,7 +23,7 @@ function saveData(filepath, data) {
 // To do this it uses the properties and zones variables which gives it everything it needs to find the files which need to be send.
 function resendMetagameEvent(properties, zones, ws) {
 	// Loops the code for every zone
-	for (var i = 0, len = zones.length; i < len; i++) {
+	for (let i = 0, len = zones.length; i < len; i++) {
 
 		const filepath = `./json/${properties[0]}/${properties[1]}/${properties[2]}/zone_${zones[i]}.json`;
 
@@ -68,7 +68,7 @@ DBGWebsocket.on('open', function open() {
 
 	// Listens to MetagameEvents on the DBGWebsocket on world 10 (Miller)
 	DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent","ContinentUnlock","ContinentLock"]}');
-	
+
 	// This let's client "DBGWebsocket" listen to incoming messages and puts the data that needs to be saved in the right location
 	DBGWebsocket.on('message', function incoming(data) {
 
@@ -82,7 +82,7 @@ DBGWebsocket.on('open', function open() {
 			switch(parsedData.payload.event_name) {
 			case 'MetagameEvent': {
 				console.log(`(sM) Type is "${parsedData.payload.event_name}"`);
-				
+
 				// Grabs the worldname from 'constants.json'. It grabs it from the worlds map and filters it to only show entries with the world ID received from the DBG API
 				// It then grabs the name from entry and saves it in world_name
 				const world_name = worldNameFromID(parsedData.payload.world_id);
@@ -102,11 +102,13 @@ DBGWebsocket.on('open', function open() {
 					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${date}.json`;
 					saveData(filepath_all_other, data);
 				}
+				console.log(`World name:${world_name}\nZone_ID: ${zone_id}`);
 				break;
 			}
 			case 'ContinentLock': {
 				console.log(`(CL) Type is "${parsedData.payload.event_name}"`);
 				continentStatusAppend(parsedData);
+				break;
 			}
 			case 'ContinentUnlock': {
 				console.log(`(CU) Type is "${parsedData.payload.event_name}"`);
@@ -157,7 +159,7 @@ DBGWebsocket.on('open', function open() {
 		DBGWebsocket.on('message', function incoming(data) {
 			// Parses 'data' and stores it in 'parsedData'
 			const parsedData = JSON.parse(data);
-	
+
 			// Filters the parsedData.types
 			switch(parsedData.type) {
 			case 'serviceMessage': {
