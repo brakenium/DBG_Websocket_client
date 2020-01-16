@@ -10,4 +10,5 @@ internalWS.on('open', function incoming() {
 
 internalWS.on('message', function incoming(data) {
     console.log(data);
+    internalWS.close();
 });

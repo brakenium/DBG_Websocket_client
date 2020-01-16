@@ -40,7 +40,7 @@ function resendMetagameEvent(properties, zones, ws) {
 			console.log(`The filepath for zone: ${zones[i]}, doesn't exist, not send`);
 		}
 	}
-};
+}
 
 function worldNameFromID(world_id) {
 	// Gets the worldname from the constants file using world_id
@@ -56,58 +56,31 @@ function continentStatusAppend(data) {
 	});
 }
 
-// internalWSServer is the websocket server meant to be used by the discord bot
-// internalWS is the client for internalWSServer. internalWSServer is used by the internal communications between this program and the discord bot
-internalWSServer.on('connection', function connection(ws) {
-	console.log('Internal websocket running');
-
-	// This listens to messages on internalWS
-	ws.on('message', function incoming(message) {
-		console.log('received: %s', message);
-
-		// This switch statement holds all internal websocket commands
-		switch(message) {
-
-		// This command grabs the last MetagameEvents (alerts) from Miller that are in the json folder
-		case 'send_last_MetagameEvents_Miller': {
-
-			// This defines the properties needed for the MetagameEvent filepath
-			const properties = ['MetagameEvent', 'Miller', 'last'];
-			const zones = ['2', '4', '6', '8', 'other'];
-
-			// This will go through each zone for miller and send their last alerts (MetagameEvents) to internalWS, these can be all alert states.
-			resendMetagameEvent(properties, zones, ws);
-		}
-		}
-	});
-
-
+console.log('Before DBGWebsocket');
 	// This websocket client listens to the daybreakgames API websocket server
 	// The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
 	// 		1.MetagameEvent on world 10 (game servers)
 	// 		2.ContinentUnlock
 	//		3.ContinentLock
-	DBGWebsocket.on('open', function open() {
-		console.log('DBG websocket open');
+DBGWebsocket.on('open', function open() {
+	console.log('DBG websocket open');
 
-		// Listens to MetagameEvents on the DBGWebsocket on world 10 (Miller)
-		DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent","ContinentUnlock","ContinentLock"]}');
+	// Listens to MetagameEvents on the DBGWebsocket on world 10 (Miller)
+	DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent","ContinentUnlock","ContinentLock"]}');
+	
+	// This let's client "DBGWebsocket" listen to incoming messages and puts the data that needs to be saved in the right location
+	DBGWebsocket.on('message', function incoming(data) {
 
-		// This let's client "DBGWebsocket" listen to incoming messages and puts the data that needs to be saved in the right location
-		DBGWebsocket.on('message', function incoming(data) {
+		// Parses 'data' and stores it in 'parsedData'
+		const parsedData = JSON.parse(data);
+		let filepath;
 
-			// Parses 'data' and stores it in 'parsedData'
-			const parsedData = JSON.parse(data);
-			let filepath;
-
-			// Filters the parsedData.types
-			switch(parsedData.type) {
-			case 'serviceMessage': {
-				console.log(`(sM) Type is "${parsedData.type}"`);
+		// Filters the parsedData.types
+		switch(parsedData.type) {
+		case 'serviceMessage': {
+			if (parsedData.payload.event_name) {
+				console.log(`(sM) Type is "${parsedData.payload.event_name}"`);
 				
-				// After receiving the serviceMessage this will immediately forward it to the internal websocket to minimize delays
-				ws.send(data);
-
 				// Grabs the worldname from 'constants.json'. It grabs it from the worlds map and filters it to only show entries with the world ID received from the DBG API
 				// It then grabs the name from entry and saves it in world_name
 				const world_name = worldNameFromID(parsedData.payload.world_id);
@@ -131,27 +104,71 @@ internalWSServer.on('connection', function connection(ws) {
 					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${date}.json`;
 					saveData(filepath_all_other, data);
 				}
-				break;
 			}
-			case 'ContinentLock': {
-				console.log(`(CL) Type is "${parsedData.type}"`);
-				continentStatusAppend(parsedData);
+			break;
+		}
+		case 'ContinentLock': {
+			console.log(`(CL) Type is "${parsedData.type}"`);
+			continentStatusAppend(parsedData);
+		}
+		case 'ContinentUnlock': {
+			console.log(`(CU) Type is "${parsedData.type}"`);
+			continentStatusAppend(parsedData);
+		}
+		case 'heartbeat': {
+			// Saves the received heartbeat to a file. Only the last heartbeat will be in that file
+			filepath = './json/heartbeat/last/heartbeat.json';
+			saveData(filepath, data);
+			break;
+		}
+		default: {
+			console.log(`(ns) Type is not specified in filter: ${parsedData.type}`);
+			break;
+		}
+		}
+	});
+
+	// internalWSServer is the websocket server meant to be used by the discord bot
+	// internalWS is the client for internalWSServer. internalWSServer is used by the internal communications between this program and the discord bot
+	internalWSServer.on('connection', function connection(ws) {
+		console.log('Internal websocket running');
+
+		// This listens to messages on internalWS
+		ws.on('message', function incoming(message) {
+			console.log('received: %s', message);
+
+			// This switch statement holds all internal websocket commands
+			switch(message) {
+
+			// This command grabs the last MetagameEvents (alerts) from Miller that are in the json folder
+			case 'send_last_MetagameEvents_Miller': {
+
+				// This defines the properties needed for the MetagameEvent filepath
+				const properties = ['MetagameEvent', 'Miller', 'last'];
+				const zones = ['2', '4', '6', '8', 'other'];
+
+				// This will go through each zone for miller and send their last alerts (MetagameEvents) to internalWS, these can be all alert states.
+				resendMetagameEvent(properties, zones, ws);
 			}
-			case 'ContinentUnlock': {
-				console.log(`(CU) Type is "${parsedData.type}"`);
-				continentStatusAppend(parsedData);
 			}
-			case 'heartbeat': {
-				// Saves the received heartbeat to a file. Only the last heartbeat will be in that file
-				filepath = './json/heartbeat/last/heartbeat.json';
-				saveData(filepath, data);
-				break;
-			}
-			default: {
-				console.log(`(ns) Type is not specified in filter: ${parsedData.type}`);
+		});
+
+		// Listen to the DBGWebsocket and forward incoming MetagameEvents
+		DBGWebsocket.on('message', function incoming(data) {
+			// Parses 'data' and stores it in 'parsedData'
+			const parsedData = JSON.parse(data);
+	
+			// Filters the parsedData.types
+			switch(parsedData.type) {
+			case 'serviceMessage': {
+				if (parsedData.payload.event_name) {
+					console.log('(sM) Sending the DBGWebsocket data that just arrived');
+					ws.send(data);
+				}
 				break;
 			}
 			}
 		});
 	});
 });
+console.log('After DBGWebsocket');
