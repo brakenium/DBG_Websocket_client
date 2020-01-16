@@ -11,6 +11,7 @@ const constants = require('./json/constants.json');
 const DBGWebsocket = new WebSocket(`wss://push.planetside2.com/streaming?environment=ps2&service-id=s:${config.dbg_api.service_id}`);
 const internalWSServer = new WebSocket.Server({ port: 8080 });
 
+
 // This function saves files to a specified filepath and throws an error if it has one
 function saveData(filepath, data) {
 	fs.writeFile(filepath, data, function(err) {
@@ -47,8 +48,8 @@ function worldNameFromID(world_id) {
 	return JSONPath(`$.worlds[?(@.world_id==${world_id})].name`, constants);
 }
 
-function continentStatusAppend(data) {
-	const parsedData = JSON.parse(data);
+function continentStatusAppend(parsedData) {
+	const data = parsedData + '\n';
 	const world_name = worldNameFromID(parsedData.payload.world_id);
 	// Appends the received continent status to the defined filepath
 	fs.appendFile(`./json/Continent(Un)Lock/${world_name}/all.json`, data, function(err) {
@@ -56,12 +57,12 @@ function continentStatusAppend(data) {
 	});
 }
 
-console.log('Before DBGWebsocket');
-	// This websocket client listens to the daybreakgames API websocket server
-	// The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
-	// 		1.MetagameEvent on world 10 (game servers)
-	// 		2.ContinentUnlock
-	//		3.ContinentLock
+
+// This websocket client listens to the daybreakgames API websocket server
+// The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
+// 		1.MetagameEvent on world 10 (game servers)
+// 		2.ContinentUnlock
+//		3.ContinentLock
 DBGWebsocket.on('open', function open() {
 	console.log('DBG websocket open');
 
@@ -73,12 +74,13 @@ DBGWebsocket.on('open', function open() {
 
 		// Parses 'data' and stores it in 'parsedData'
 		const parsedData = JSON.parse(data);
-		let filepath;
 
 		// Filters the parsedData.types
 		switch(parsedData.type) {
+		// Makes sure only serviceMessages are filtered further
 		case 'serviceMessage': {
-			if (parsedData.payload.event_name) {
+			switch(parsedData.payload.event_name) {
+			case 'MetagameEvent': {
 				console.log(`(sM) Type is "${parsedData.payload.event_name}"`);
 				
 				// Grabs the worldname from 'constants.json'. It grabs it from the worlds map and filters it to only show entries with the world ID received from the DBG API
@@ -89,12 +91,8 @@ DBGWebsocket.on('open', function open() {
 				// Then it grabs the zone_id from the entry and saves it in zone_id
 				const zone_id = JSONPath(`$.metagame_event_list[?(@.metagame_event_id==${parsedData.payload.metagame_event_id})].zone_id`, constants);
 
-				// Logs the above defined variables
-				console.log(world_name);
-				console.log(zone_id);
-
 				// Defines the filepath and saves the data in that file
-				filepath = `./json/${parsedData.payload.event_name}/${world_name}/last/zone_${zone_id}.json`;
+				const filepath = `./json/${parsedData.payload.event_name}/${world_name}/last/zone_${zone_id}.json`;
 				saveData(filepath, data);
 
 				// Checks if zone_id is other
@@ -104,21 +102,24 @@ DBGWebsocket.on('open', function open() {
 					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${date}.json`;
 					saveData(filepath_all_other, data);
 				}
+				break;
+			}
+			case 'ContinentLock': {
+				console.log(`(CL) Type is "${parsedData.payload.event_name}"`);
+				continentStatusAppend(parsedData);
+			}
+			case 'ContinentUnlock': {
+				console.log(`(CU) Type is "${parsedData.payload.event_name}"`);
+				continentStatusAppend(parsedData);
+			}
 			}
 			break;
 		}
-		case 'ContinentLock': {
-			console.log(`(CL) Type is "${parsedData.type}"`);
-			continentStatusAppend(parsedData);
-		}
-		case 'ContinentUnlock': {
-			console.log(`(CU) Type is "${parsedData.type}"`);
-			continentStatusAppend(parsedData);
-		}
 		case 'heartbeat': {
 			// Saves the received heartbeat to a file. Only the last heartbeat will be in that file
-			filepath = './json/heartbeat/last/heartbeat.json';
-			saveData(filepath, data);
+			const filepath = './json/heartbeat/last/heartbeat.json';
+			const date = new Date();
+			saveData(filepath, data + `\n${date}`);
 			break;
 		}
 		default: {
@@ -135,7 +136,6 @@ DBGWebsocket.on('open', function open() {
 
 		// This listens to messages on internalWS
 		ws.on('message', function incoming(message) {
-			console.log('received: %s', message);
 
 			// This switch statement holds all internal websocket commands
 			switch(message) {
@@ -171,4 +171,3 @@ DBGWebsocket.on('open', function open() {
 		});
 	});
 });
-console.log('After DBGWebsocket');
