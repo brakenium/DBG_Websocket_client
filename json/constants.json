@@ -618,7 +618,7 @@
                 "en": "Take readings of aerial anomalies"
             },
             "type": "10",
-            "zone_id": "other"
+            "zone_id": "6"
         },
         {
             "metagame_event_id": "173",
