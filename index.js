@@ -57,7 +57,6 @@ function continentStatusAppend(parsedData) {
 	});
 }
 
-
 // This websocket client listens to the daybreakgames API websocket server
 // The following wil let client DBGWebsocket send a message to the websocket server to send messages for the following events:
 // 		1.MetagameEvent on world 10 (game servers)
@@ -117,13 +116,6 @@ DBGWebsocket.on('open', function open() {
 			}
 			break;
 		}
-		case 'heartbeat': {
-			// Saves the received heartbeat to a file. Only the last heartbeat will be in that file
-			const filepath = './json/heartbeat/last/heartbeat.json';
-			const date = new Date();
-			saveData(filepath, data + `\n${date}`);
-			break;
-		}
 		default: {
 			console.log(`(ns) Type is not specified in filter: ${parsedData.type}`);
 			break;
@@ -138,7 +130,6 @@ DBGWebsocket.on('open', function open() {
 
 		// This listens to messages on internalWS
 		ws.on('message', function incoming(message) {
-
 			// This switch statement holds all internal websocket commands
 			switch(message) {
 
