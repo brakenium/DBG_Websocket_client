@@ -114,10 +114,10 @@ DBGWebsocket.on('open', function open() {
 				continentStatusAppend(parsedData);
 				break;
 			}
-			case 'heartbeat': {
-				break;
 			}
-			}
+			break;
+		}
+		case 'heartbeat': {
 			break;
 		}
 		default: {
