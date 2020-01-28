@@ -31,7 +31,7 @@ function resendMetagameEvent(properties, zones, ws) {
 		if (fs.existsSync(filepath)) {
 
 			// Saves the content in a variable
-			const data = JSON.stringify(require(filepath));
+			const data = fs.readFileSync(filepath);
 
 			// Sends the content to the websocket specified in the 'ws' variable
 			console.log(`(IWS) Sending saved data to the websocket for zone: ${zones[i]}`);
@@ -112,6 +112,10 @@ DBGWebsocket.on('open', function open() {
 			case 'ContinentUnlock': {
 				console.log(`(CU) Type is "${parsedData.payload.event_name}"`);
 				continentStatusAppend(parsedData);
+				break;
+			}
+			case 'heartbeat': {
+				break;
 			}
 			}
 			break;
