@@ -66,7 +66,7 @@ DBGWebsocket.on('open', function open() {
 	console.log('DBG websocket open');
 
 	// Listens to MetagameEvents on the DBGWebsocket on world 10 (Miller)
-	DBGWebsocket.send('{"service":"event","action":"subscribe","worlds":["10"],"eventNames":["MetagameEvent","ContinentUnlock","ContinentLock"]}');
+	DBGWebsocket.send(JSON.stringify(config.dbg_api.command));
 
 	// This let's client "DBGWebsocket" listen to incoming messages and puts the data that needs to be saved in the right location
 	DBGWebsocket.on('message', function incoming(data) {
@@ -134,18 +134,21 @@ DBGWebsocket.on('open', function open() {
 
 		// This listens to messages on internalWS
 		ws.on('message', function incoming(message) {
+			const parsed_message = JSON.parse(message);
+
 			// This switch statement holds all internal websocket commands
-			switch(message) {
+			switch(parsed_message.type) {
 
 			// This command grabs the last MetagameEvents (alerts) from Miller that are in the json folder
-			case 'send_last_MetagameEvents_Miller': {
+			case 'metagameEventsRequest': {
+				if (parsed_message.payload.which == 'last') {
+					// This defines the properties needed for the MetagameEvent filepath
+					const properties = ['MetagameEvent', 'Miller', 'last'];
+					const zones = parsed_message.payload.zone_id;
 
-				// This defines the properties needed for the MetagameEvent filepath
-				const properties = ['MetagameEvent', 'Miller', 'last'];
-				const zones = ['2', '4', '6', '8', 'other'];
-
-				// This will go through each zone for miller and send their last alerts (MetagameEvents) to internalWS, these can be all alert states.
-				resendMetagameEvent(properties, zones, ws);
+					// This will go through each zone for miller and send their last alerts (MetagameEvents) to internalWS, these can be all alert states.
+					resendMetagameEvent(properties, zones, ws);
+				}
 			}
 			}
 		});
