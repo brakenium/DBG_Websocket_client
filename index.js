@@ -97,8 +97,7 @@ DBGWebsocket.on('open', function open() {
 				// Checks if zone_id is other
 				if (zone_id == 'other') {
 					// Defines the necessary variables to save the alert with zone_id: 'other' in a file and saves it there
-					const date = new Date();
-					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${date}.json`;
+					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${parsedData.payload.timestamp}.json`;
 					saveData(filepath_all_other, data);
 				}
 				console.log(`World name:${world_name}\nZone_ID: ${zone_id}`);
