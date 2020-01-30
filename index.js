@@ -49,7 +49,7 @@ function worldNameFromID(world_id) {
 }
 
 function continentStatusAppend(parsedData) {
-	const data = parsedData + '\n';
+	const data = JSON.stringify(parsedData) + '\n';
 	const world_name = worldNameFromID(parsedData.payload.world_id);
 	// Appends the received continent status to the defined filepath
 	fs.appendFile(`./json/Continent(Un)Lock/${world_name}/all.json`, data, function(err) {
