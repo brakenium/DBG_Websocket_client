@@ -176,7 +176,7 @@
           "en": "Capture and hold all 3 Biolabs on Esamir"
         },
         "type": "2",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "14",
@@ -187,7 +187,7 @@
           "en": "Capture and hold all 3 Amp Stations on Esamir"
         },
         "type": "2",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "16",
@@ -279,7 +279,7 @@
         },
         "type": "8",
         "experience_bonus": "30",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "127",
@@ -291,7 +291,7 @@
         },
         "type": "8",
         "experience_bonus": "30",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "128",
@@ -303,7 +303,7 @@
         },
         "type": "8",
         "experience_bonus": "30",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "129",
@@ -423,7 +423,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "151",
@@ -435,7 +435,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "152",
@@ -447,7 +447,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "153",
@@ -541,7 +541,7 @@
           "en": "Additional territories are coming back online."
         },
         "type": "5",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "161",
@@ -574,7 +574,7 @@
           "en": "Capture and hold all 3 Tech Plants on Esamir"
         },
         "type": "2",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "167",
@@ -663,7 +663,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "177",
@@ -755,7 +755,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "187",
@@ -803,7 +803,7 @@
         },
         "type": "9",
         "experience_bonus": "25",
-        "zone_id": "6"
+        "zone_id": "8"
       },
       {
         "metagame_event_id": "191",
