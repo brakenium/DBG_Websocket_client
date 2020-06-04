@@ -96,9 +96,16 @@ DBGWebsocket.on('open', function open() {
 
 				// Checks if zone_id is other
 				if (zone_id == 'other') {
-					// Defines the necessary variables to save the alert with zone_id: 'other' in a file and saves it there
+					// Adds open continents to data constant and saves it in dataAndContinents
+					const indarStatus = fs.readFileSync('./json/Continent(Un)Lock/last/zone_2.json');
+					const hossinStatus = fs.readFileSync('./json/Continent(Un)Lock/last/zone_4.json');
+					const amerishStatus = fs.readFileSync('./json/Continent(Un)Lock/last/zone_6.json');
+					const esamirStatus = fs.readFileSync('./json/Continent(Un)Lock/last/zone8.json');
+					const dataAndContinents = `${data}\n\n${indarStatus}\n${hossinStatus}\n${amerishStatus}\n${esamirStatus}`;
+
+					// Defines filepath and saves the dataAndContinents constant to that filepath
 					const filepath_all_other = `./json/${parsedData.payload.event_name}/${world_name}/all_other/${parsedData.payload.timestamp}.json`;
-					saveData(filepath_all_other, data);
+					saveData(filepath_all_other, dataAndContinents);
 				}
 				console.log(`World name:${world_name}\nZone_ID: ${zone_id}`);
 				break;
@@ -106,11 +113,15 @@ DBGWebsocket.on('open', function open() {
 			case 'ContinentLock': {
 				console.log(`(CL) Type is "${parsedData.payload.event_name}"`);
 				continentStatusAppend(parsedData);
+				const filepath = `./json/Continent(Un)Lock/last/zone_${parsedData.payload.zone_id}.json`;
+				saveData(filepath, data);
 				break;
 			}
 			case 'ContinentUnlock': {
 				console.log(`(CU) Type is "${parsedData.payload.event_name}"`);
 				continentStatusAppend(parsedData);
+				const filepath = `./json/Continent(Un)Lock/last/zone_${parsedData.payload.zone_id}.json`;
+				saveData(filepath, data);
 				break;
 			}
 			}
